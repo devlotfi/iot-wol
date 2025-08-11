@@ -1,0 +1,103 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  useDisclosure,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Modal,
+} from "@heroui/react";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import { ValidatedInput } from "./validated-input";
+import { useQueryClient } from "@tanstack/react-query";
+import { DeviceStore } from "../device-store";
+
+export default function AddDeviceModal() {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const queryClient = useQueryClient();
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      mac: "",
+    },
+    validationSchema: yup.object({
+      name: yup.string().required(),
+      mac: yup
+        .string()
+        .matches(/^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/, {
+          message: "Invalid mac adress",
+        })
+        .required(),
+    }),
+    onSubmit(values) {
+      console.log(values);
+      DeviceStore.addDevice(values);
+      queryClient.resetQueries({
+        queryKey: ["DEVICES"],
+      });
+      onClose();
+    },
+  });
+
+  return (
+    <>
+      <Button
+        isIconOnly
+        variant="shadow"
+        color="primary"
+        radius="full"
+        className="sticky h-[3.5rem] w-[3.5rem] bottom-[1rem] right-[1rem]"
+        onPress={onOpen}
+      >
+        <FontAwesomeIcon
+          icon={faPlus}
+          className="text-[18pt]"
+        ></FontAwesomeIcon>
+      </Button>
+
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {() => (
+            <form
+              onSubmit={formik.handleSubmit}
+              className="flex flex-col gap-[1rem]"
+            >
+              <ModalHeader className="flex flex-col gap-1">
+                Add device
+              </ModalHeader>
+              <ModalBody>
+                <ValidatedInput
+                  formik={formik}
+                  name="name"
+                  label="Name"
+                  placeholder="Device name"
+                ></ValidatedInput>
+                <ValidatedInput
+                  formik={formik}
+                  name="mac"
+                  label="Mac address"
+                  placeholder="00:1A:2B:3C:4D:5E"
+                ></ValidatedInput>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  fullWidth
+                  type="submit"
+                  color="primary"
+                  startContent={
+                    <FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>
+                  }
+                >
+                  Add
+                </Button>
+              </ModalFooter>
+            </form>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
+  );
+}
