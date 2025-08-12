@@ -1,4 +1,4 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPenAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   ModalContent,
@@ -13,18 +13,24 @@ import * as yup from "yup";
 import { ValidatedInput } from "./validated-input";
 import { useQueryClient } from "@tanstack/react-query";
 import { DeviceStore } from "../device-store";
+import type { Device } from "../types/device";
 import type { DisclosureProps } from "../types/disclosure-props";
 
-export default function AddDeviceModal({
+interface EditDeviceModalProps extends DisclosureProps {
+  device: Device;
+}
+
+export default function EditDeviceModal({
+  device,
   isOpen,
   onClose,
   onOpenChange,
-}: DisclosureProps) {
+}: EditDeviceModalProps) {
   const queryClient = useQueryClient();
   const formik = useFormik({
     initialValues: {
-      name: "",
-      mac: "",
+      name: device.name,
+      mac: device.mac,
     },
     validationSchema: yup.object({
       name: yup.string().required(),
@@ -37,7 +43,10 @@ export default function AddDeviceModal({
     }),
     onSubmit(values) {
       console.log(values);
-      DeviceStore.addDevice(values);
+      DeviceStore.editDevice({
+        id: device.id,
+        ...values,
+      });
       queryClient.resetQueries({
         queryKey: ["DEVICES"],
       });
@@ -54,7 +63,7 @@ export default function AddDeviceModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Add device
+              Edit device
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
@@ -75,9 +84,11 @@ export default function AddDeviceModal({
                 fullWidth
                 type="submit"
                 color="primary"
-                startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
+                startContent={
+                  <FontAwesomeIcon icon={faPenAlt}></FontAwesomeIcon>
+                }
               >
-                Add
+                Edit
               </Button>
             </ModalFooter>
           </form>

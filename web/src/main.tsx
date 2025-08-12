@@ -2,12 +2,19 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { ThemeProvider } from "./provider/theme-provider.tsx";
-import { createRouter, RouterProvider } from "@tanstack/react-router";
+import {
+  createHashHistory,
+  createRouter,
+  RouterProvider,
+} from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 import { HeroUIProvider } from "@heroui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MqttProvider from "./provider/mqtt-provider.tsx";
 
-const router = createRouter({ routeTree });
+const history = createHashHistory();
+
+const router = createRouter({ routeTree, history });
 
 declare module "@tanstack/react-router" {
   interface Register {
@@ -22,7 +29,9 @@ createRoot(document.getElementById("root")!).render(
     <HeroUIProvider>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <RouterProvider router={router}></RouterProvider>
+          <MqttProvider>
+            <RouterProvider router={router}></RouterProvider>
+          </MqttProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </HeroUIProvider>

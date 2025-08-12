@@ -8,11 +8,11 @@ import {
   faMoon,
   faComputer,
   faDesktop,
-  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { ThemeContext } from "../context/theme-context";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import ConnectionStatus from "./connection-status";
 
 export default function MainNavbar() {
   const navigate = useNavigate();
@@ -40,6 +40,9 @@ export default function MainNavbar() {
         <div className="hidden lg:flex text-primary text-[14pt] font-bold">
           IOT Wake On Lan
         </div>
+        <div className="flex lg:hidden text-primary text-[14pt] font-bold">
+          IOT WOL
+        </div>
       </div>
 
       <div className="hidden lg:flex gap-[0.5rem]">
@@ -59,14 +62,14 @@ export default function MainNavbar() {
         <Button
           variant="solid"
           className={cn(
-            pathname === "/settings"
+            pathname === "/connection"
               ? "text-primary font-bold bg-content2"
               : "bg-content1"
           )}
-          onPress={() => navigate({ to: "/settings" })}
-          startContent={<FontAwesomeIcon icon={faGear}></FontAwesomeIcon>}
+          onPress={() => navigate({ to: "/connection" })}
+          endContent={<ConnectionStatus></ConnectionStatus>}
         >
-          Settings
+          Connection
         </Button>
       </div>
 

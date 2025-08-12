@@ -1,7 +1,8 @@
 import { Button, cn } from "@heroui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDesktop, faGear } from "@fortawesome/free-solid-svg-icons";
+import { faBroadcastTower, faDesktop } from "@fortawesome/free-solid-svg-icons";
 import { useLocation, useNavigate } from "@tanstack/react-router";
+import ConnectionStatus from "./connection-status";
 
 export default function BottomTabs() {
   const navigate = useNavigate();
@@ -29,14 +30,14 @@ export default function BottomTabs() {
         variant="solid"
         className={cn(
           "flex-1 h-auto",
-          pathname === "/settings"
+          pathname === "/connection"
             ? "text-primary font-bold bg-content2"
             : "bg-content1"
         )}
-        onPress={() => navigate({ to: "/settings" })}
-        startContent={<FontAwesomeIcon icon={faGear}></FontAwesomeIcon>}
+        onPress={() => navigate({ to: "/connection" })}
+        endContent={<ConnectionStatus></ConnectionStatus>}
       >
-        Settings
+        <FontAwesomeIcon icon={faBroadcastTower}></FontAwesomeIcon>
       </Button>
     </div>
   );
