@@ -20,7 +20,7 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
     - [Components](#components)
   - [Wiring](#wiring)
   - [Images](#images)
-- [Web App](#web-app)
+- [Web Client App](#web-client-app)
 
 # Tech stack
 
@@ -109,7 +109,7 @@ Some images of the final build
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/images/image-2.jpg">
 
 
-# Web App
+# Web Client App
 We also built a web app that uses **MQTT.js** that is deployed on github pages here, to manage multiple devices and send messages to the mqtt broker
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-1.png">
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-2.png">
