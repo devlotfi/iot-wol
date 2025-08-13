@@ -234,7 +234,7 @@ export default function MqttProvider({ children }: PropsWithChildren) {
               <ModalHeader className="flex flex-col gap-1">Success</ModalHeader>
               <ModalBody className="items-center justify-center">
                 <div className="flex">
-                  The WOL (Wake On Lan) packet has been sent
+                  The WOL (Wake-On-Lan) packet has been sent
                 </div>
                 <FontAwesomeIcon
                   icon={faCheckCircle}

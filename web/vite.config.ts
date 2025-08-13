@@ -13,4 +13,20 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: "/iot-wol/",
+  build: {
+    outDir: "../docs",
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: (id) => {
+          if (id.includes("@heroui")) {
+            return "heroui";
+          } else if (id.includes("mqtt")) {
+            return "mqtt";
+          }
+        },
+      },
+    },
+  },
 });

@@ -38,7 +38,7 @@ export default function MainNavbar() {
       <div className="flex items-center absolute left-[1rem] gap-[0.5rem]">
         <img src={LogoSVG} alt="logo" className="h-[2.5rem]" />
         <div className="hidden lg:flex text-primary text-[14pt] font-bold">
-          IOT Wake On Lan
+          IOT Wake-On-Lan
         </div>
         <div className="flex lg:hidden text-primary text-[14pt] font-bold">
           IOT WOL
