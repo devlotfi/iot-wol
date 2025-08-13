@@ -5,9 +5,24 @@ THe goal of this project is to create a system for remotely turning on a compute
 it works by using the capabilities of WOL (Wake-On-Lan) and extending it using IOT technologies
 
 # 📌 Contents
-- [Tech stack](#-tech-stack)
+- [Tech stack](#tech-stack)
+  - [Web app](#web-app)
+  - [IOT](#iot)
+  - [Diagrams](#diagrams)
+- [Introduction](#introduction)
+  - [What is Wake-On-Lan ?](#what-is-wake-on-lan-)
+  - [Wake-On-Lan Limitations](#wake-on-lan-limitations)
+  - [Suggested solution](#suggested-solution)
+- [How does the system work ?](#how-does-the-system-work-)
+- [Building the WOL Controller](#building-the-wol-controller)
+  - [Requirements](#requirements)
+    - [PC](#pc)
+    - [Components](#components)
+  - [Wiring](#wiring)
+  - [Images](#images)
+- [Web App](#web-app)
 
-# Tech steck
+# Tech stack
 
 ## Web app
 <p float="left">
