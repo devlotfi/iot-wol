@@ -19,6 +19,12 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
   - [Wiring](#wiring)
   - [Images](#images)
 - [Web Client App](#web-client-app)
+- [Enabling support for WOL](#enabling-support-for-wol)
+  - [Enabling WOL in BIOS](#enabling-wol-in--bios)
+  - [Enabling WOL in OS](#enabling-wol-in-os)
+    - [Linux](#linux)
+    - [Windows](#windows)
+
 
 # Tech stack
 
@@ -108,3 +114,19 @@ There is also a web app client that uses **MQTT.js** that is deployed on github 
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-2.png">
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-3.png">
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-4.png">
+
+# Enabling support for WOL
+On most computers WOL is not enabled by default and you have to enable it in both BIOS and/or OS
+
+## Enabling WOL in  BIOS
+The process of enabling WOL In BIOS can be different or may require extra steps depending on each motherboard
+- Look for terminology such as "PCI Power up", "Allow PCI wake up event" or "Boot from PCI/PCI-E"
+- You may need to disable power saving options (Example: On certain MSI motherboards disable EUP 2013)
+
+## Enabling WOL in OS
+
+### Linux
+I suggest this [guide](https://wiki.archlinux.org/title/Wake-on-LAN)
+
+### Windows
+I suggest following the relevant parts of this [guide](https://www.windowscentral.com/software-apps/windows-11/how-to-enable-wake-on-lan-on-windows-11)
