@@ -15,9 +15,7 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
   - [Suggested solution](#suggested-solution)
 - [How does the system work ?](#how-does-the-system-work-)
 - [Building the WOL Controller](#building-the-wol-controller)
-  - [Requirements](#requirements)
-    - [PC](#pc)
-    - [Components](#components)
+  - [Components](#components)
   - [Wiring](#wiring)
   - [Images](#images)
 - [Web Client App](#web-client-app)
@@ -77,13 +75,7 @@ In this repo to bypass this limitations, we leveraged IOT technologies to help s
 
 # Building the WOL Controller
 
-## Requirements
-
-### PC
-- A Motherboard that supports WOL
-- Configuring support for WOL in the OS here
-
-### Components
+## Components
 - Arduino Nano
 - ENC28J60 (Ethernet Shield)
 - IO Shield
