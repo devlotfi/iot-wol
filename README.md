@@ -102,7 +102,8 @@ Some images of the final build
 
 
 # Web Client App
-We also built a web app that uses **MQTT.js** that is deployed on github pages here, to manage multiple devices and send messages to the mqtt broker
+There is also a web app client that uses **MQTT.js** that is deployed on github pages [https://devlotfi.github.io/iot-wol/](https://devlotfi.github.io/iot-wol/) that allows you to manage multiple devices and send WOL requests messages to the mqtt broker
+
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-1.png">
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-2.png">
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/preview/preview-3.png">
