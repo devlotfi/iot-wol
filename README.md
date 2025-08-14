@@ -17,6 +17,7 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
 - [Building the WOL Controller](#building-the-wol-controller)
   - [Components](#components)
   - [Wiring](#wiring)
+  - [Configuration](#configuration)
   - [Images](#images)
 - [Web Client App](#web-client-app)
 - [Enabling support for WOL](#enabling-support-for-wol)
@@ -24,6 +25,7 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
   - [Enabling WOL in OS](#enabling-wol-in-os)
     - [Linux](#linux)
     - [Windows](#windows)
+
 
 
 # Tech stack
