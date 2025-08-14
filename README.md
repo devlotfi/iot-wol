@@ -100,6 +100,28 @@ In this repo to bypass this limitations, we leveraged IOT technologies to help s
 
 <img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/diagrams/wiring-diagram.png">
 
+## Configuration
+Change this part of the arduino [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/arduino.ino) to match your needs
+
+```ino
+// ----------------- NETWORK SETTINGS -----------------
+byte mac[] = { 0xDE, 0xA5, 0xB7, 0xE0, 0xFE, 0xED };
+IPAddress ip(192, 168, 1, 230);            // Static IP
+IPAddress mqttServer(5, 196, 78, 28);      // MQTT broker IP
+IPAddress broadcastIp(192, 168, 1, 255);   // Network broadcast IP
+
+// ----------------- HARDWARE PINS -----------------
+const int greenLedPin = 4;
+const int redLedPin   = 5;
+const int buzzerPin   = 6;
+
+// ----------------- MQTT SETTINGS -----------------
+const int mqttPort = 1883;
+const char* mqttTopic = "username/wol";
+const char* ackTopic  = "username/wol/ack";
+const char* wakePassword = "password"; // Command prefix
+```
+
 ## Images
 Some images of the final build
 
