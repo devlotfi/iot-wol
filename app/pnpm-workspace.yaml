@@ -1,3 +1,7 @@
 onlyBuiltDependencies:
+  - '@firebase/util'
+  - '@heroui/shared-utils'
   - esbuild
+  - protobufjs
+  - rxdb
   - sharp
