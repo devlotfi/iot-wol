@@ -75,7 +75,12 @@ export default function AddConnectionModal({
   const [useAuth, setUseAuth] = useState<boolean>(true);
 
   return (
-    <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal
+      backdrop="blur"
+      scrollBehavior="outside"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+    >
       <ModalContent>
         {() => (
           <form

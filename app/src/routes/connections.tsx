@@ -30,7 +30,7 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-1 flex-col items-center">
-      <div className="flex flex-1 flex-col pt-[2rem] max-w-screen-md w-full">
+      <div className="flex flex-1 flex-col max-w-screen-md w-full">
         <div className="flex justify-between items-center z-10 py-[1rem] px-[1rem]">
           <Heading
             icon={faWifi}

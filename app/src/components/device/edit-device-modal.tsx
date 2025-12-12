@@ -77,7 +77,12 @@ export default function EditDeviceModal({
   });
 
   return (
-    <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+    <Modal
+      backdrop="blur"
+      scrollBehavior="outside"
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+    >
       <ModalContent>
         {() => (
           <form
