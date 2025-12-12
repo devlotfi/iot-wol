@@ -6,9 +6,9 @@ export default heroui({
     light: {
       layout: {
         radius: {
-          small: "4px",
-          medium: "6px",
-          large: "8px",
+          small: "6px",
+          medium: "8px",
+          large: "10px",
         },
       },
       colors: {
@@ -34,6 +34,11 @@ export default heroui({
           "900": "#17181D",
         },
         success: {
+          DEFAULT: "#79D251",
+          foreground: "#ffffff",
+        },
+        danger: {
+          DEFAULT: "#D25153",
           foreground: "#ffffff",
         },
         primary: {
@@ -45,9 +50,9 @@ export default heroui({
     dark: {
       layout: {
         radius: {
-          small: "4px",
-          medium: "6px",
-          large: "8px",
+          small: "6px",
+          medium: "8px",
+          large: "10px",
         },
       },
       colors: {
@@ -73,6 +78,11 @@ export default heroui({
           "900": "#FAFAFA",
         },
         success: {
+          DEFAULT: "#79D251",
+          foreground: "#ffffff",
+        },
+        danger: {
+          DEFAULT: "#D25153",
           foreground: "#ffffff",
         },
         primary: {

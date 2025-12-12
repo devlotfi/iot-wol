@@ -1,7 +1,7 @@
 import Error404SVG from "../assets/error-404.svg";
-import { Button, ButtonGroup, Divider } from "@heroui/react";
+import { Button, Divider } from "@heroui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faMapMarkedAlt } from "@fortawesome/free-solid-svg-icons";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "@tanstack/react-router";
 
 export default function NotFound() {
@@ -16,36 +16,19 @@ export default function NotFound() {
         </div>
         <Divider></Divider>
 
-        <ButtonGroup fullWidth>
-          <Button
-            fullWidth
-            variant="ghost"
-            color="primary"
-            startContent={<FontAwesomeIcon icon={faHome}></FontAwesomeIcon>}
-            onPress={() =>
-              navigate({
-                to: "/",
-              })
-            }
-          >
-            Landing page
-          </Button>
-          <Button
-            fullWidth
-            variant="ghost"
-            color="primary"
-            startContent={
-              <FontAwesomeIcon icon={faMapMarkedAlt}></FontAwesomeIcon>
-            }
-            onPress={() =>
-              navigate({
-                to: "/",
-              })
-            }
-          >
-            Map
-          </Button>
-        </ButtonGroup>
+        <Button
+          fullWidth
+          variant="ghost"
+          color="primary"
+          startContent={<FontAwesomeIcon icon={faHome}></FontAwesomeIcon>}
+          onPress={() =>
+            navigate({
+              to: "/",
+            })
+          }
+        >
+          Landing page
+        </Button>
       </div>
     </div>
   );

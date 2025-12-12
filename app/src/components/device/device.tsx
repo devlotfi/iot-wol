@@ -18,7 +18,7 @@ interface DeviceProps {
 }
 
 export default function Device({ device }: DeviceProps) {
-  const { connectionData } = useContext(MqttContext);
+  const { connectionData, wakeDevice, pingDevice } = useContext(MqttContext);
 
   const {
     isOpen: isOpenEdit,
@@ -53,7 +53,9 @@ export default function Device({ device }: DeviceProps) {
 
         <div className="flex flex-col md:flex-row pr-[1.5rem] gap-[1rem]">
           <div className="flex flex-col flex-1">
-            <div className="flex font-bold text-[15pt]">{device.name}</div>
+            <div className="flex font-bold text-[15pt] break-all">
+              {device.name}
+            </div>
             <DataRow name="MAC" value={device.mac}></DataRow>
             <DataRow name="IP" value={device.ip || "Not set"}></DataRow>
           </div>
@@ -64,10 +66,13 @@ export default function Device({ device }: DeviceProps) {
               radius="full"
               variant="bordered"
               className="w-full md:w-auto border border-divider"
-              isDisabled={!(connectionData && connectionData.isConnected)}
+              isDisabled={
+                !(connectionData && connectionData.isConnected) || !device.ip
+              }
               endContent={
                 <FontAwesomeIcon icon={faRightLeft}></FontAwesomeIcon>
               }
+              onPress={() => pingDevice(device)}
             >
               Ping
             </Button>
@@ -104,6 +109,7 @@ export default function Device({ device }: DeviceProps) {
           size="lg"
           isDisabled={!(connectionData && connectionData.isConnected)}
           className="absolute right-0 translate-x-[50%] z-10"
+          onPress={() => wakeDevice(device)}
         >
           <FontAwesomeIcon icon={faPlay}></FontAwesomeIcon>
         </Button>

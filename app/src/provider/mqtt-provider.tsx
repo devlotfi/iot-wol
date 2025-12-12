@@ -1,21 +1,23 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type PropsWithChildren,
+} from "react";
 import { MqttContext, MqttContextInitialValue } from "../context/mqtt-context";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Spinner,
-  useDisclosure,
-} from "@heroui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faClock,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
+import { useDisclosure } from "@heroui/react";
+import type { ConnectionDocType } from "../rxdb/connection";
+import mqtt from "mqtt";
+import type { DeviceDocType } from "../rxdb/device";
+import WOLSentModal from "../components/mqtt-modals/wol-sent-modal";
+import ErrorModal from "../components/mqtt-modals/error-modal";
+import TimeoutModal from "../components/mqtt-modals/timeout-modal";
+import LoadingModal from "../components/mqtt-modals/loading-modal";
+import DeviceOnModal from "../components/mqtt-modals/device-on-modal";
+import DeviceOffModal from "../components/mqtt-modals/device-off-modal";
+import type { MqttCommand } from "../types/mqtt-command";
+import type { MqttEvent } from "../types/mqtt-event";
 
 export default function MqttProvider({ children }: PropsWithChildren) {
   const [connectionData, setConnectionData] = useState(
@@ -29,46 +31,132 @@ export default function MqttProvider({ children }: PropsWithChildren) {
     onOpenChange: onOpenChangeLoading,
   } = useDisclosure();
   const {
-    isOpen: isOpenInvalidPassword,
-    onOpen: onOpenInvalidPassword,
-    onOpenChange: onOpenChangeInvalidPassword,
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onOpenChange: onOpenChangeError,
+    onClose: onCloseError,
   } = useDisclosure();
   const {
     isOpen: isOpenWOLSent,
     onOpen: onOpenWOLSent,
     onOpenChange: onOpenChangeWOLSent,
+    onClose: onCloseWOLSent,
   } = useDisclosure();
   const {
     isOpen: isOpenTimeout,
     onOpen: onOpenTimeout,
     onOpenChange: onOpenChangeTimeout,
+    onClose: onCloseTimeout,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeviceOn,
+    onOpen: onOpenDeviceOn,
+    onOpenChange: onOpenChangeDeviceOn,
+    onClose: onCloseDeviceOn,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenDeviceOff,
+    onOpen: onOpenDeviceOff,
+    onOpenChange: onOpenChangeDeviceOff,
+    onClose: onCloseDeviceOff,
   } = useDisclosure();
 
   const timeoutRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (connectionData && connectionData.requestPending) {
-      onOpenLoading();
-      timeoutRef.current = setTimeout(() => {
-        setConnectionData((connectionData) => ({
-          ...connectionData,
-          requestPending: false,
-        }));
-        onCloseLoading();
-        onOpenTimeout();
-      }, 10000) as unknown as number;
+  const openLoading = useCallback(() => {
+    onOpenLoading();
+    timeoutRef.current = setTimeout(() => {
+      onCloseLoading();
+      onOpenTimeout();
+    }, 10000) as unknown as number;
+  }, [onCloseLoading, onOpenLoading, onOpenTimeout]);
+
+  const closeLoading = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
-  }, [connectionData, onCloseLoading, onOpenLoading, onOpenTimeout]);
+    onCloseLoading();
+  }, [onCloseLoading]);
+
+  const mqttConnect = useCallback(
+    async (connection: ConnectionDocType, password?: string) => {
+      if (connectionData) {
+        await connectionData.client.endAsync();
+      }
+
+      const client = await mqtt.connect(connection.url, {
+        username: connection.username || undefined,
+        password: password || undefined,
+        reconnectPeriod: 1000,
+      });
+
+      setConnectionData(() => ({
+        client,
+        id: connection.id,
+        name: connection.name,
+        isConnected: false,
+        topic: connection.topic,
+        responseTopic: connection.responseTopic,
+      }));
+      openLoading();
+    },
+    [connectionData, openLoading]
+  );
+
+  const mqttDisconnect = useCallback(async () => {
+    if (connectionData) {
+      await connectionData.client.endAsync();
+    }
+    setConnectionData(() => null);
+  }, [connectionData]);
+
+  const wakeDevice = useCallback(
+    async (device: DeviceDocType) => {
+      if (!connectionData) return;
+      openLoading();
+      const data: MqttCommand = {
+        command: "WAKE",
+        params: {
+          mac: device.mac,
+        },
+      };
+      await connectionData.client.publishAsync(
+        connectionData.topic,
+        JSON.stringify(data)
+      );
+    },
+    [connectionData, openLoading]
+  );
+
+  const pingDevice = useCallback(
+    async (device: DeviceDocType) => {
+      if (!connectionData || !device.ip) return;
+      openLoading();
+      const data: MqttCommand = {
+        command: "PING",
+        params: {
+          ip: device.ip,
+        },
+      };
+      await connectionData.client.publishAsync(
+        connectionData.topic,
+        JSON.stringify(data)
+      );
+    },
+    [connectionData, openLoading]
+  );
 
   useEffect(() => {
     const handleConnect = () => {
       console.log("mqtt-context: connected");
-      setConnectionData((connectionData) => ({
-        ...connectionData,
-        isConnected: true,
-      }));
+      closeLoading();
+      setConnectionData((connectionData) => {
+        if (!connectionData) return null;
+        return { ...connectionData, isConnected: true };
+      });
 
-      if (connectionData.client && connectionData.responseTopic) {
+      if (connectionData) {
         connectionData.client.subscribe(connectionData.responseTopic, (err) => {
           if (!err) console.log("Subscribed to ", connectionData.responseTopic);
         });
@@ -76,41 +164,45 @@ export default function MqttProvider({ children }: PropsWithChildren) {
     };
     const handleReconnect = () => {
       console.log("mqtt-context: reconnect");
-      setConnectionData((connectionData) => ({
-        ...connectionData,
-        isConnected: false,
-      }));
+      setConnectionData((connectionData) => {
+        if (!connectionData) return null;
+        return { ...connectionData, isConnected: false };
+      });
     };
 
     const handleDisconnect = () => {
       console.log("mqtt-context: disconnect");
-      setConnectionData((connectionData) => ({
-        ...connectionData,
-        isConnected: false,
-      }));
+      setConnectionData((connectionData) => {
+        if (!connectionData) return null;
+        return { ...connectionData, isConnected: false };
+      });
     };
 
-    const handleMessage = (topic: string, message: Buffer) => {
+    const handleError = () => {
+      console.log("mqtt-context: error");
+      closeLoading();
+      setConnectionData((connectionData) => {
+        if (!connectionData) return null;
+        connectionData.client.end(true);
+        return null;
+      });
+      onOpenError();
+    };
+
+    const handleMessage = (_: string, message: Buffer) => {
       const msg = message.toString();
-      console.log(`Received: ${msg} ${topic}`);
+      const payload: MqttEvent = JSON.parse(msg);
 
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = null;
-      }
-      setConnectionData((connectionData) => ({
-        ...connectionData,
-        requestPending: false,
-      }));
-      onCloseLoading();
+      closeLoading();
 
-      switch (msg) {
-        case "WOL_SENT":
-          onOpenWOLSent();
-          break;
-        case "INVALID_PASSWORD":
-          onOpenInvalidPassword();
-          break;
+      if (payload.event === "WOL_SENT") {
+        onOpenWOLSent();
+      } else if (payload.event === "PING_RESULT") {
+        if (payload.alive) {
+          onOpenDeviceOn();
+        } else {
+          onOpenDeviceOff();
+        }
       }
     };
 
@@ -119,6 +211,7 @@ export default function MqttProvider({ children }: PropsWithChildren) {
       connectionData.client.on("reconnect", handleReconnect);
       connectionData.client.on("disconnect", handleDisconnect);
       connectionData.client.on("message", handleMessage);
+      connectionData.client.on("error", handleError);
     }
 
     return () => {
@@ -127,115 +220,66 @@ export default function MqttProvider({ children }: PropsWithChildren) {
         connectionData.client.removeListener("reconnect", handleReconnect);
         connectionData.client.removeListener("disconnect", handleDisconnect);
         connectionData.client.removeListener("message", handleMessage);
+        connectionData.client.removeListener("error", handleError);
       }
     };
-  }, [connectionData, onCloseLoading, onOpenInvalidPassword, onOpenWOLSent]);
+  }, [
+    closeLoading,
+    connectionData,
+    onCloseLoading,
+    onOpenDeviceOff,
+    onOpenDeviceOn,
+    onOpenError,
+    onOpenWOLSent,
+  ]);
 
   return (
     <>
-      <Modal
+      <LoadingModal
         isOpen={isOpenLoading}
+        onOpen={onOpenLoading}
         onOpenChange={onOpenChangeLoading}
-        isDismissable={false}
-        isKeyboardDismissDisabled={true}
-        hideCloseButton
-      >
-        <ModalContent>
-          {() => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Loading...
-              </ModalHeader>
-              <ModalBody className="items-center justify-center pb-[3rem]">
-                <Spinner size="lg" color="primary"></Spinner>
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-
-      <Modal isOpen={isOpenTimeout} onOpenChange={onOpenChangeTimeout}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                No response
-              </ModalHeader>
-              <ModalBody className="items-center justify-center">
-                <div className="flex text-center">
-                  The request has timed out and no response was recieved
-                </div>
-                <FontAwesomeIcon
-                  icon={faClock}
-                  className="text-[60pt] text-warning"
-                ></FontAwesomeIcon>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-
-      <Modal
-        isOpen={isOpenInvalidPassword}
-        onOpenChange={onOpenChangeInvalidPassword}
-        isDismissable={false}
-        isKeyboardDismissDisabled={false}
-        hideCloseButton
-      >
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Error</ModalHeader>
-              <ModalBody className="items-center justify-center">
-                <div className="flex">The given password is invalid</div>
-                <FontAwesomeIcon
-                  icon={faTimesCircle}
-                  className="text-[60pt] text-danger"
-                ></FontAwesomeIcon>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
-
-      <Modal isOpen={isOpenWOLSent} onOpenChange={onOpenChangeWOLSent}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">Success</ModalHeader>
-              <ModalBody className="items-center justify-center">
-                <div className="flex">
-                  The WOL (Wake-On-Lan) packet has been sent
-                </div>
-                <FontAwesomeIcon
-                  icon={faCheckCircle}
-                  className="text-[60pt] text-success"
-                ></FontAwesomeIcon>
-              </ModalBody>
-              <ModalFooter>
-                <Button variant="light" onPress={onClose}>
-                  Close
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+        onClose={onCloseLoading}
+      ></LoadingModal>
+      <TimeoutModal
+        isOpen={isOpenTimeout}
+        onOpen={onOpenTimeout}
+        onOpenChange={onOpenChangeTimeout}
+        onClose={onCloseTimeout}
+      ></TimeoutModal>
+      <ErrorModal
+        isOpen={isOpenError}
+        onOpen={onOpenError}
+        onOpenChange={onOpenChangeError}
+        onClose={onCloseError}
+      ></ErrorModal>
+      <WOLSentModal
+        isOpen={isOpenWOLSent}
+        onOpen={onOpenWOLSent}
+        onOpenChange={onOpenChangeWOLSent}
+        onClose={onCloseWOLSent}
+      ></WOLSentModal>
+      <DeviceOnModal
+        isOpen={isOpenDeviceOn}
+        onOpen={onOpenDeviceOn}
+        onOpenChange={onOpenChangeDeviceOn}
+        onClose={onCloseDeviceOn}
+      ></DeviceOnModal>
+      <DeviceOffModal
+        isOpen={isOpenDeviceOff}
+        onOpen={onOpenDeviceOff}
+        onOpenChange={onOpenChangeDeviceOff}
+        onClose={onCloseDeviceOff}
+      ></DeviceOffModal>
 
       <MqttContext.Provider
         value={{
           connectionData,
           setConnectionData,
+          mqttConnect,
+          mqttDisconnect,
+          wakeDevice,
+          pingDevice,
         }}
       >
         {children}

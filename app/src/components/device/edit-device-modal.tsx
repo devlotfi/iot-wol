@@ -52,7 +52,7 @@ export default function EditDeviceModal({
     initialValues: {
       name: device.name,
       mac: device.mac,
-      ip: device.ip,
+      ip: device.ip || "",
     },
     validationSchema: yup.object({
       name: yup.string().required(),

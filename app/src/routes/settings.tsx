@@ -66,8 +66,8 @@ function RouteComponent() {
   };
 
   return (
-    <div className="flex flex-1 flex-col items-center">
-      <div className="flex flex-col w-full max-w-screen-sm px-[1rem]">
+    <div className="flex flex-1 flex-col items-center px-[1rem]">
+      <div className="flex flex-col w-full max-w-screen-sm pt-[2rem]">
         <div className="flex items-center gap-[1rem] mb-[2rem]">
           <div className="flex justify-center items-center rounded-full h-[3rem] w-[3rem] bg-primary">
             <FontAwesomeIcon

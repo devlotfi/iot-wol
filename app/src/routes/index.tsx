@@ -8,6 +8,9 @@ import AddDeviceModal from "../components/device/add-device-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import EmptySVG from "../assets/empty.svg";
 import Device from "../components/device/device";
+import Heading from "../components/heading";
+import ErrorScreen from "../components/error-screen";
+import LoadingScreen from "../components/loading-screen";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
@@ -17,7 +20,7 @@ function RouteComponent() {
   const { rxdb } = useContext(RxDBContext);
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
-  const { data } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["DEVICES"],
     queryFn: async () => {
       const data = await rxdb.devices.find().exec();
@@ -27,19 +30,12 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-1 flex-col items-center">
-      <div className="flex flex-1 flex-col max-w-screen-md w-full">
-        <div className="flex justify-between items-center sticky top-0 z-10 py-[1rem] px-[1rem]">
-          <div className="flex items-center gap-[1rem]">
-            <div className="flex justify-center items-center rounded-full h-[3rem] w-[3rem] bg-primary">
-              <FontAwesomeIcon
-                icon={faComputer}
-                className="text-primary-foreground text-[17pt]"
-              ></FontAwesomeIcon>
-            </div>
-            <div className="flex font-bold text-[20pt]">
-              Devices ({data?.length})
-            </div>
-          </div>
+      <div className="flex flex-1 flex-col max-w-screen-md pt-[2rem] w-full">
+        <div className="flex justify-between items-center z-10 py-[1rem] px-[1rem]">
+          <Heading
+            icon={faComputer}
+            title={`Devices (${data?.length || 0})`}
+          ></Heading>
 
           <Button
             isIconOnly
@@ -62,7 +58,11 @@ function RouteComponent() {
           ></AddDeviceModal>
         </div>
 
-        {data?.length ? (
+        {isLoading ? (
+          <LoadingScreen></LoadingScreen>
+        ) : isError ? (
+          <ErrorScreen></ErrorScreen>
+        ) : data && data.length ? (
           <div className="flex flex-col flex-1 mt-[0.5rem] gap-[1rem] pl-[1rem] pr-[2.5rem] pb-[5rem]">
             {data.map((device) => (
               <Device key={device.id} device={device}></Device>

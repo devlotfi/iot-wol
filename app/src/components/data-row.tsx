@@ -15,14 +15,16 @@ export default function DataRow({
   return (
     <div
       className={cn(
-        "flex justify-between items-center gap-[0.5rem]",
+        "flex flex-col md:flex-row md:gap-[0.5rem] mb-[0.3rem] md:mb-0",
         className
       )}
       {...props}
     >
-      <div className="flex text-[12pt] opacity-80">{name}:</div>
-      <div className="flex h-[1px] flex-1 bg-divider"></div>
-      <div className="flex text-[12pt]">{value}</div>
+      <div className="flex flex-1 justify-between items-center gap-[0.7rem]">
+        <div className="flex text-[12pt] opacity-80">{name}:</div>
+        <div className="flex h-[1px] flex-1 bg-divider"></div>
+      </div>
+      <div className="flex text-[12pt] break-all">{value}</div>
     </div>
   );
 }
