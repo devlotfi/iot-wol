@@ -42,19 +42,18 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <HeroUIProvider>
       <ToastProvider placement="top-center" toastOffset={13}></ToastProvider>
-      <div className="flex flex-col md:flex-row min-h-dvh min-w-dvw max-h-dvh max-w-dvw overflow-hidden bg-content1">
-        <QueryClientProvider client={queryClient}>
-          <PWAProvider>
-            <ThemeProvider>
-              <RxDBProvider>
-                <MqttProvider>
-                  <RouterProvider router={router}></RouterProvider>
-                </MqttProvider>
-              </RxDBProvider>
-            </ThemeProvider>
-          </PWAProvider>
-        </QueryClientProvider>
-      </div>
+
+      <QueryClientProvider client={queryClient}>
+        <PWAProvider>
+          <ThemeProvider>
+            <RxDBProvider>
+              <MqttProvider>
+                <RouterProvider router={router}></RouterProvider>
+              </MqttProvider>
+            </RxDBProvider>
+          </ThemeProvider>
+        </PWAProvider>
+      </QueryClientProvider>
     </HeroUIProvider>
   </StrictMode>
 );
