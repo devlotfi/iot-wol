@@ -7,7 +7,8 @@ import { Spinner } from "@heroui/react";
 import type { PropsWithChildren } from "react";
 import ErrorScreen from "../components/error-screen";
 import type { AppRxDatabase } from "../rxdb/rxdb";
-import { savedMapFeatureSchemaLiteral } from "../rxdb/saved-map-feature";
+import { connectionSchemaLiteral } from "../rxdb/connection";
+import { deviceSchemaLiteral } from "../rxdb/device";
 
 export default function RxDBProvider({ children }: PropsWithChildren) {
   const { data, isLoading, isError, error } = useQuery({
@@ -22,8 +23,11 @@ export default function RxDBProvider({ children }: PropsWithChildren) {
       });
 
       await rxDb.addCollections({
-        savedMapFeatures: {
-          schema: savedMapFeatureSchemaLiteral,
+        connections: {
+          schema: connectionSchemaLiteral,
+        },
+        devices: {
+          schema: deviceSchemaLiteral,
         },
       });
 

@@ -28,7 +28,7 @@ function RootComponent() {
         ) : null}
 
         <Sidebar></Sidebar>
-        <div className="flex flex-col flex-1 h-[calc(100dvh-5rem)] md:h-auto md:w-[calc(100dvw-6rem)] overflow-x-hidden overflow-y-auto bg-[linear-gradient(to_top,hsl(var(--heroui-content1)/1)_0%,hsl(var(--heroui-content2)/1)_10%,hsl(var(--heroui-content2)/1)_100%)] md:bg-[linear-gradient(to_right,hsl(var(--heroui-content1)/1)_0%,hsl(var(--heroui-content2)/1)_10%,hsl(var(--heroui-content2)/1)_100%)]">
+        <div className="flex flex-col flex-1 pt-[5rem] h-[calc(100dvh-5rem)] md:h-auto md:w-[calc(100dvw-6rem)] overflow-x-hidden overflow-y-auto bg-[linear-gradient(to_top,hsl(var(--heroui-content1)/1)_0%,hsl(var(--heroui-content2)/1)_10%,hsl(var(--heroui-content2)/1)_100%)] md:bg-[linear-gradient(to_right,hsl(var(--heroui-content1)/1)_0%,hsl(var(--heroui-content2)/1)_10%,hsl(var(--heroui-content2)/1)_100%)]">
           <Outlet />
         </div>
         <BottomTabs></BottomTabs>

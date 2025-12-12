@@ -16,6 +16,7 @@ import RxDBProvider from "./provider/rxdb-provider";
 import { addRxPlugin } from "rxdb";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import NotFound from "./components/not-found";
+import MqttProvider from "./provider/mqtt-provider";
 
 const history = createHashHistory();
 
@@ -45,7 +46,9 @@ createRoot(document.getElementById("root")!).render(
         <PWAProvider>
           <ThemeProvider>
             <RxDBProvider>
-              <RouterProvider router={router}></RouterProvider>
+              <MqttProvider>
+                <RouterProvider router={router}></RouterProvider>
+              </MqttProvider>
             </RxDBProvider>
           </ThemeProvider>
         </PWAProvider>

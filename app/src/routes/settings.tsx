@@ -1,5 +1,6 @@
 import {
   faComputer,
+  faGear,
   faLanguage,
   faMoon,
   faPaintbrush,
@@ -67,6 +68,16 @@ function RouteComponent() {
   return (
     <div className="flex flex-1 flex-col items-center">
       <div className="flex flex-col w-full max-w-screen-sm px-[1rem]">
+        <div className="flex items-center gap-[1rem] mb-[2rem]">
+          <div className="flex justify-center items-center rounded-full h-[3rem] w-[3rem] bg-primary">
+            <FontAwesomeIcon
+              icon={faGear}
+              className="text-primary-foreground text-[17pt]"
+            ></FontAwesomeIcon>
+          </div>
+          <div className="flex font-bold text-[20pt]">Settings</div>
+        </div>
+
         <Card>
           <CardBody>
             <div className="flex flex-col gap-[0.7rem]">

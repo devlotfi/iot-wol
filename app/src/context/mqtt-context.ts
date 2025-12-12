@@ -1,29 +1,22 @@
 import mqtt from "mqtt";
-import { createContext } from "react";
+import { createContext, type SetStateAction } from "react";
 
 export interface ConnectionData {
-  client: mqtt.MqttClient | null;
+  client: mqtt.MqttClient;
   isConnected: boolean;
   requestPending: boolean;
-  topic: string | null;
-  acknowledgementTopic: string | null;
-  WOLPassword: string | null;
+  id: string;
+  topic: string;
+  responseTopic: string;
 }
 
 interface MqttContext {
-  connectionData: ConnectionData;
-  setConnectionData: (value: (value: ConnectionData) => ConnectionData) => void;
+  connectionData: ConnectionData | null;
+  setConnectionData: (value: SetStateAction<ConnectionData | null>) => void;
 }
 
 export const MqttContextInitialValue: MqttContext = {
-  connectionData: {
-    client: null,
-    isConnected: false,
-    requestPending: false,
-    topic: null,
-    acknowledgementTopic: null,
-    WOLPassword: null,
-  },
+  connectionData: null,
   setConnectionData() {},
 };
 

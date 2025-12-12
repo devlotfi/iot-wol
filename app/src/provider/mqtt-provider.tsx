@@ -47,7 +47,7 @@ export default function MqttProvider({ children }: PropsWithChildren) {
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (connectionData.requestPending) {
+    if (connectionData && connectionData.requestPending) {
       onOpenLoading();
       timeoutRef.current = setTimeout(() => {
         setConnectionData((connectionData) => ({
@@ -58,12 +58,7 @@ export default function MqttProvider({ children }: PropsWithChildren) {
         onOpenTimeout();
       }, 10000) as unknown as number;
     }
-  }, [
-    connectionData.requestPending,
-    onCloseLoading,
-    onOpenLoading,
-    onOpenTimeout,
-  ]);
+  }, [connectionData, onCloseLoading, onOpenLoading, onOpenTimeout]);
 
   useEffect(() => {
     const handleConnect = () => {
@@ -73,17 +68,10 @@ export default function MqttProvider({ children }: PropsWithChildren) {
         isConnected: true,
       }));
 
-      if (connectionData.client && connectionData.acknowledgementTopic) {
-        connectionData.client.subscribe(
-          connectionData.acknowledgementTopic,
-          (err) => {
-            if (!err)
-              console.log(
-                "Subscribed to ",
-                connectionData.acknowledgementTopic
-              );
-          }
-        );
+      if (connectionData.client && connectionData.responseTopic) {
+        connectionData.client.subscribe(connectionData.responseTopic, (err) => {
+          if (!err) console.log("Subscribed to ", connectionData.responseTopic);
+        });
       }
     };
     const handleReconnect = () => {
@@ -126,7 +114,7 @@ export default function MqttProvider({ children }: PropsWithChildren) {
       }
     };
 
-    if (connectionData.client) {
+    if (connectionData) {
       connectionData.client.on("connect", handleConnect);
       connectionData.client.on("reconnect", handleReconnect);
       connectionData.client.on("disconnect", handleDisconnect);
@@ -134,20 +122,14 @@ export default function MqttProvider({ children }: PropsWithChildren) {
     }
 
     return () => {
-      if (connectionData.client) {
+      if (connectionData) {
         connectionData.client.removeListener("connect", handleConnect);
         connectionData.client.removeListener("reconnect", handleReconnect);
         connectionData.client.removeListener("disconnect", handleDisconnect);
         connectionData.client.removeListener("message", handleMessage);
       }
     };
-  }, [
-    connectionData.acknowledgementTopic,
-    connectionData.client,
-    onCloseLoading,
-    onOpenInvalidPassword,
-    onOpenWOLSent,
-  ]);
+  }, [connectionData, onCloseLoading, onOpenInvalidPassword, onOpenWOLSent]);
 
   return (
     <>
