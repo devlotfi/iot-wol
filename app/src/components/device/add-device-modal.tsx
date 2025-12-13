@@ -91,7 +91,7 @@ export default function AddDeviceModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              {t("connected")}
+              {t("addDevice")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
