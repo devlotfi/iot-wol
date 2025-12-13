@@ -14,12 +14,14 @@ import EditConnectionModal from "./edit-connection-modal";
 import DataRow from "../data-row";
 import { useMutation } from "@tanstack/react-query";
 import PasswordModal from "./password-modal";
+import { useTranslation } from "react-i18next";
 
 interface ConnectionProps {
   connection: ConnectionDocType;
 }
 
 export default function Connection({ connection }: ConnectionProps) {
+  const { t } = useTranslation();
   const { connectionData, mqttConnect, mqttDisconnect } =
     useContext(MqttContext);
 
@@ -96,9 +98,12 @@ export default function Connection({ connection }: ConnectionProps) {
             {connection.username ? (
               <>
                 <div className="flex font-bold text-[12pt]">
-                  Authenthication
+                  {t("authenthication")}
                 </div>
-                <DataRow name="Username" value={connection.username}></DataRow>
+                <DataRow
+                  name={t("username")}
+                  value={connection.username}
+                ></DataRow>
               </>
             ) : null}
           </div>
@@ -113,7 +118,7 @@ export default function Connection({ connection }: ConnectionProps) {
               endContent={<FontAwesomeIcon icon={faPenAlt}></FontAwesomeIcon>}
               onPress={() => onOpenEdit()}
             >
-              Edit
+              {t("edit")}
             </Button>
             <Button
               size="sm"
@@ -124,7 +129,7 @@ export default function Connection({ connection }: ConnectionProps) {
               endContent={<FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon>}
               onPress={() => onOpenDelete()}
             >
-              Delete
+              {t("delete")}
             </Button>
           </div>
         </div>

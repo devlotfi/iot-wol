@@ -11,12 +11,14 @@ import Device from "../components/device/device";
 import Heading from "../components/heading";
 import ErrorScreen from "../components/error-screen";
 import LoadingScreen from "../components/loading-screen";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
@@ -34,7 +36,7 @@ function RouteComponent() {
         <div className="flex justify-between items-center z-10 py-[1rem] px-[1rem]">
           <Heading
             icon={faComputer}
-            title={`Devices (${data?.length || 0})`}
+            title={`${t("devices")} (${data?.length || 0})`}
           ></Heading>
 
           <Button
@@ -75,9 +77,11 @@ function RouteComponent() {
               alt="device"
               className="h-[12rem] md:h-[15rem]"
             />
-            <div className="flex text-[18pt] font-bold">No devices yet</div>
+            <div className="flex text-[18pt] font-bold">
+              {t("noDevices.title")}
+            </div>
             <div className="flex text-[13pt] opacity-70">
-              Start by adding a device identified by its mac adress
+              {t("noDevices.subTitle")}
             </div>
             <Button
               radius="full"
@@ -86,7 +90,7 @@ function RouteComponent() {
               startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
               onPress={onOpen}
             >
-              Add device
+              {t("addDevice")}
             </Button>
           </div>
         )}

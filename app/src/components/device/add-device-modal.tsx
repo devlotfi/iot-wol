@@ -17,12 +17,14 @@ import { useContext } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
 import type { DeviceDocType } from "../../rxdb/device";
 import { v4 as uuid } from "uuid";
+import { useTranslation } from "react-i18next";
 
 export default function AddDeviceModal({
   isOpen,
   onClose,
   onOpenChange,
 }: DisclosureProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -89,14 +91,14 @@ export default function AddDeviceModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Add device
+              {t("connected")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
                 isRequired
                 formik={formik}
                 name="name"
-                label="Name"
+                label={t("name")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -105,7 +107,7 @@ export default function AddDeviceModal({
                 isRequired
                 formik={formik}
                 name="mac"
-                label="Mac address"
+                label={t("macAddress")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -113,7 +115,7 @@ export default function AddDeviceModal({
               <ValidatedInput
                 formik={formik}
                 name="ip"
-                label="IP address (Optional: for PING)"
+                label={t("ipAddressIOptional")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -127,7 +129,7 @@ export default function AddDeviceModal({
                 isLoading={isPending}
                 startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
               >
-                Add
+                {t("add")}
               </Button>
             </ModalFooter>
           </form>

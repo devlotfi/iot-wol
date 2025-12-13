@@ -9,8 +9,11 @@ import {
 } from "@heroui/react";
 import type { DisclosureProps } from "../../types/disclosure-props";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 export default function ErrorModal({ isOpen, onOpenChange }: DisclosureProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal
       backdrop="blur"
@@ -23,12 +26,11 @@ export default function ErrorModal({ isOpen, onOpenChange }: DisclosureProps) {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Error</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">
+              {t("error")}
+            </ModalHeader>
             <ModalBody className="items-center justify-center">
-              <div className="flex">
-                An error occured while trying to connect, please check your
-                (Network info / Credentials)
-              </div>
+              <div className="flex">{t("connectionError")}</div>
               <FontAwesomeIcon
                 icon={faTimesCircle}
                 className="text-[60pt] text-danger"
@@ -36,7 +38,7 @@ export default function ErrorModal({ isOpen, onOpenChange }: DisclosureProps) {
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Close
+                {t("close")}
               </Button>
             </ModalFooter>
           </>

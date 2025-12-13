@@ -16,6 +16,7 @@ import type { DeviceDocType } from "../../rxdb/device";
 import { ValidatedInput } from "../validated-input";
 import { useContext } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
+import { useTranslation } from "react-i18next";
 
 interface EditDeviceModalProps extends DisclosureProps {
   device: DeviceDocType;
@@ -27,6 +28,7 @@ export default function EditDeviceModal({
   onClose,
   onOpenChange,
 }: EditDeviceModalProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -90,27 +92,31 @@ export default function EditDeviceModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Edit device
+              {t("editDevice")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
                 isRequired
                 formik={formik}
                 name="name"
-                label="Name"
-                placeholder="Device name"
+                label={t("name")}
+                classNames={{
+                  inputWrapper: "shadow-none border border-divider",
+                }}
               ></ValidatedInput>
               <ValidatedInput
                 isRequired
                 formik={formik}
                 name="mac"
-                label="Mac address"
-                placeholder="00:1A:2B:3C:4D:5E"
+                label={t("macAddress")}
+                classNames={{
+                  inputWrapper: "shadow-none border border-divider",
+                }}
               ></ValidatedInput>
               <ValidatedInput
                 formik={formik}
                 name="ip"
-                label="IP address (Optional: for PING)"
+                label={t("ipAddressIOptional")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -126,7 +132,7 @@ export default function EditDeviceModal({
                   <FontAwesomeIcon icon={faPenAlt}></FontAwesomeIcon>
                 }
               >
-                Edit
+                {t("edit")}
               </Button>
             </ModalFooter>
           </form>

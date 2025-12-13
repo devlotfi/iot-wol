@@ -6,11 +6,14 @@ import {
   Spinner,
 } from "@heroui/react";
 import type { DisclosureProps } from "../../types/disclosure-props";
+import { useTranslation } from "react-i18next";
 
 export default function LoadingModal({
   isOpen,
   onOpenChange,
 }: DisclosureProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal
       backdrop="blur"
@@ -24,7 +27,7 @@ export default function LoadingModal({
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Loading...
+              {t("loading")}
             </ModalHeader>
             <ModalBody className="items-center justify-center pb-[3rem]">
               <Spinner size="lg" color="primary"></Spinner>

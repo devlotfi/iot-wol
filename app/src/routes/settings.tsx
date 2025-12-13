@@ -23,7 +23,7 @@ export const Route = createFileRoute("/settings")({
 
 function RouteComponent() {
   const { themeOption, setTheme } = useContext(ThemeContext);
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const renderFlag = (languageCode: string, className?: string) => {
     switch (languageCode) {
@@ -75,7 +75,7 @@ function RouteComponent() {
               className="text-primary-foreground text-[17pt]"
             ></FontAwesomeIcon>
           </div>
-          <div className="flex font-bold text-[20pt]">Settings</div>
+          <div className="flex font-bold text-[20pt]">{t("settings")}</div>
         </div>
 
         <Card>
@@ -114,7 +114,7 @@ function RouteComponent() {
                     <FontAwesomeIcon icon={faComputer}></FontAwesomeIcon>
                   }
                 >
-                  System
+                  {t("system")}
                 </SelectItem>
                 <SelectItem
                   key={ThemeOptions.LIGHT}
@@ -122,7 +122,7 @@ function RouteComponent() {
                     <FontAwesomeIcon icon={faSun}></FontAwesomeIcon>
                   }
                 >
-                  Light
+                  {t("light")}
                 </SelectItem>
                 <SelectItem
                   key={ThemeOptions.DARK}
@@ -130,7 +130,7 @@ function RouteComponent() {
                     <FontAwesomeIcon icon={faMoon}></FontAwesomeIcon>
                   }
                 >
-                  Dark
+                  {t("dark")}
                 </SelectItem>
               </Select>
 

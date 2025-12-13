@@ -18,12 +18,14 @@ import { useContext, useState } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
 import { v4 as uuid } from "uuid";
 import type { ConnectionDocType } from "../../rxdb/connection";
+import { useTranslation } from "react-i18next";
 
 export default function AddConnectionModal({
   isOpen,
   onClose,
   onOpenChange,
 }: DisclosureProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -88,14 +90,14 @@ export default function AddConnectionModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Add connection
+              {t("addConnection")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
                 isRequired
                 formik={formik}
                 name="name"
-                label="Name"
+                label={t("name")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -134,14 +136,14 @@ export default function AddConnectionModal({
                   setUseAuth(value);
                 }}
               >
-                Use authenthication
+                {t("useAuthenthication")}
               </Switch>
               {useAuth ? (
                 <ValidatedInput
                   isRequired
                   formik={formik}
                   name="username"
-                  label="Username"
+                  label={t("username")}
                   classNames={{
                     inputWrapper: "shadow-none border border-divider",
                   }}
@@ -156,7 +158,7 @@ export default function AddConnectionModal({
                 isLoading={isPending}
                 startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
               >
-                Add
+                {t("add")}
               </Button>
             </ModalFooter>
           </form>

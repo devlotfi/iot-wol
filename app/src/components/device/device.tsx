@@ -12,12 +12,14 @@ import { MqttContext } from "../../context/mqtt-context";
 import DeleteDeviceModal from "./delete-device-modal";
 import EditDeviceModal from "./edit-device-modal";
 import DataRow from "../data-row";
+import { useTranslation } from "react-i18next";
 
 interface DeviceProps {
   device: DeviceDocType;
 }
 
 export default function Device({ device }: DeviceProps) {
+  const { t } = useTranslation();
   const { connectionData, wakeDevice, pingDevice } = useContext(MqttContext);
 
   const {
@@ -84,7 +86,7 @@ export default function Device({ device }: DeviceProps) {
               endContent={<FontAwesomeIcon icon={faPenAlt}></FontAwesomeIcon>}
               onPress={() => onOpenEdit()}
             >
-              Edit
+              {t("edit")}
             </Button>
             <Button
               size="sm"
@@ -94,7 +96,7 @@ export default function Device({ device }: DeviceProps) {
               endContent={<FontAwesomeIcon icon={faTrashAlt}></FontAwesomeIcon>}
               onPress={() => onOpenDelete()}
             >
-              Delete
+              {t("delete")}
             </Button>
           </div>
         </div>

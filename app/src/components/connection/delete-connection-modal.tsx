@@ -13,6 +13,7 @@ import type { DisclosureProps } from "../../types/disclosure-props";
 import { useContext } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
 import type { ConnectionDocType } from "../../rxdb/connection";
+import { useTranslation } from "react-i18next";
 
 interface DeleteConnectionModalProps extends DisclosureProps {
   connection: ConnectionDocType;
@@ -24,6 +25,7 @@ export default function DeleteConnectionModal({
   onClose,
   onOpenChange,
 }: DeleteConnectionModalProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -45,12 +47,10 @@ export default function DeleteConnectionModal({
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Delete connection
+              {t("deleteConnection")}
             </ModalHeader>
             <ModalBody>
-              <div className="flex">
-                Are you sure you want to delete this connection ?
-              </div>
+              <div className="flex">{t("deleteConfirmation")}</div>
             </ModalBody>
             <ModalFooter>
               <Button
@@ -58,7 +58,7 @@ export default function DeleteConnectionModal({
                 className="border border-divider"
                 onPress={onClose}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 color="danger"
@@ -68,7 +68,7 @@ export default function DeleteConnectionModal({
                 isLoading={isPending}
                 onPress={() => mutate()}
               >
-                Delete
+                {t("delete")}
               </Button>
             </ModalFooter>
           </>

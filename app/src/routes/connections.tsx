@@ -11,12 +11,14 @@ import Connection from "../components/connection/connection";
 import Heading from "../components/heading";
 import LoadingScreen from "../components/loading-screen";
 import ErrorScreen from "../components/error-screen";
+import { useTranslation } from "react-i18next";
 
 export const Route = createFileRoute("/connections")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
 
@@ -34,7 +36,7 @@ function RouteComponent() {
         <div className="flex justify-between items-center z-10 py-[1rem] px-[1rem]">
           <Heading
             icon={faWifi}
-            title={`Connections (${data?.length || 0})`}
+            title={`${t("connections")} (${data?.length || 0})`}
           ></Heading>
 
           <Button
@@ -78,9 +80,11 @@ function RouteComponent() {
               alt="device"
               className="h-[12rem] md:h-[15rem]"
             />
-            <div className="flex text-[18pt] font-bold">No connections yet</div>
+            <div className="flex text-[18pt] font-bold">
+              {t("noConnections.title")}
+            </div>
             <div className="flex text-[13pt] opacity-70">
-              Start by adding an MQTT broker connection
+              {t("noConnections.subTitle")}
             </div>
             <Button
               radius="full"
@@ -89,7 +93,7 @@ function RouteComponent() {
               startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
               onPress={onOpen}
             >
-              Add connection
+              {t("addConnection")}
             </Button>
           </div>
         )}

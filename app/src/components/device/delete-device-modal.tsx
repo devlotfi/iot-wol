@@ -13,6 +13,7 @@ import type { DeviceDocType } from "../../rxdb/device";
 import type { DisclosureProps } from "../../types/disclosure-props";
 import { useContext } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
+import { useTranslation } from "react-i18next";
 
 interface DeleteDeviceModalProps extends DisclosureProps {
   device: DeviceDocType;
@@ -24,6 +25,7 @@ export default function DeleteDeviceModal({
   onClose,
   onOpenChange,
 }: DeleteDeviceModalProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -45,12 +47,10 @@ export default function DeleteDeviceModal({
         {() => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Delete device
+              {t("deleteDevice")}
             </ModalHeader>
             <ModalBody>
-              <div className="flex">
-                Are you sure you want to delete this device ?
-              </div>
+              <div className="flex">{t("deleteConfirmation")}</div>
             </ModalBody>
             <ModalFooter>
               <Button
@@ -58,7 +58,7 @@ export default function DeleteDeviceModal({
                 className="border border-divider"
                 onPress={onClose}
               >
-                Cancel
+                {t("cancel")}
               </Button>
               <Button
                 color="danger"
@@ -68,7 +68,7 @@ export default function DeleteDeviceModal({
                 isLoading={isPending}
                 onPress={() => mutate()}
               >
-                Delete
+                {t("delete")}
               </Button>
             </ModalFooter>
           </>

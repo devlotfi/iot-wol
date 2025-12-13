@@ -13,6 +13,7 @@ import * as yup from "yup";
 import type { DisclosureProps } from "../../types/disclosure-props";
 import { ValidatedInput } from "../validated-input";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PasswordModalProps extends DisclosureProps {
   onSubmit: (value: string) => void;
@@ -24,6 +25,7 @@ export default function PasswordModal({
   onClose,
   onOpenChange,
 }: PasswordModalProps) {
+  const { t } = useTranslation();
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -49,7 +51,7 @@ export default function PasswordModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Connection authenthication
+              {t("connectionAuthenthication")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
@@ -57,7 +59,7 @@ export default function PasswordModal({
                 type={isVisible ? "text" : "password"}
                 formik={formik}
                 name="password"
-                label="Password"
+                label={t("password")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -84,7 +86,7 @@ export default function PasswordModal({
                 color="primary"
                 startContent={<FontAwesomeIcon icon={faPlus}></FontAwesomeIcon>}
               >
-                Connect
+                {t("connect")}
               </Button>
             </ModalFooter>
           </form>

@@ -9,11 +9,14 @@ import {
 } from "@heroui/react";
 import type { DisclosureProps } from "../../types/disclosure-props";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 export default function DeviceOnModal({
   isOpen,
   onOpenChange,
 }: DisclosureProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal
       backdrop="blur"
@@ -27,10 +30,10 @@ export default function DeviceOnModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              Power status
+              {t("powerStatus")}
             </ModalHeader>
             <ModalBody className="items-center justify-center">
-              <div className="flex">The device is turned ON</div>
+              <div className="flex">{t("deviceOn")}</div>
               <FontAwesomeIcon
                 icon={faToggleOn}
                 className="text-[60pt] text-success"
@@ -38,7 +41,7 @@ export default function DeviceOnModal({
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Close
+                {t("close")}
               </Button>
             </ModalFooter>
           </>

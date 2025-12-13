@@ -17,6 +17,7 @@ import { ValidatedInput } from "../validated-input";
 import { useContext, useState } from "react";
 import { RxDBContext } from "../../context/rxdb-context";
 import type { ConnectionDocType } from "../../rxdb/connection";
+import { useTranslation } from "react-i18next";
 
 interface EditConnectionModalProps extends DisclosureProps {
   connection: ConnectionDocType;
@@ -28,6 +29,7 @@ export default function EditConnectionModal({
   onClose,
   onOpenChange,
 }: EditConnectionModalProps) {
+  const { t } = useTranslation();
   const { rxdb } = useContext(RxDBContext);
   const queryClient = useQueryClient();
 
@@ -98,14 +100,14 @@ export default function EditConnectionModal({
             className="flex flex-col gap-[1rem]"
           >
             <ModalHeader className="flex flex-col gap-1">
-              Edit connection
+              {t("editConnection")}
             </ModalHeader>
             <ModalBody>
               <ValidatedInput
                 isRequired
                 formik={formik}
                 name="name"
-                label="Name"
+                label={t("name")}
                 classNames={{
                   inputWrapper: "shadow-none border border-divider",
                 }}
@@ -144,14 +146,14 @@ export default function EditConnectionModal({
                   setUseAuth(value);
                 }}
               >
-                Use authenthication
+                {t("useAuthenthication")}
               </Switch>
               {useAuth ? (
                 <ValidatedInput
                   isRequired
                   formik={formik}
                   name="username"
-                  label="Username"
+                  label={t("username")}
                   classNames={{
                     inputWrapper: "shadow-none border border-divider",
                   }}
@@ -168,7 +170,7 @@ export default function EditConnectionModal({
                   <FontAwesomeIcon icon={faPenAlt}></FontAwesomeIcon>
                 }
               >
-                Edit
+                {t("edit")}
               </Button>
             </ModalFooter>
           </form>

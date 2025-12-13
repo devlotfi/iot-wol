@@ -9,23 +9,24 @@ import {
 } from "@heroui/react";
 import type { DisclosureProps } from "../../types/disclosure-props";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useTranslation } from "react-i18next";
 
 export default function TimeoutModal({
   isOpen,
   onOpenChange,
 }: DisclosureProps) {
+  const { t } = useTranslation();
+
   return (
     <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              No response
+              {t("noResponse")}
             </ModalHeader>
             <ModalBody className="items-center justify-center">
-              <div className="flex text-center">
-                The request has timed out and no response was recieved
-              </div>
+              <div className="flex text-center">{t("timeoutMessage")}</div>
               <FontAwesomeIcon
                 icon={faClock}
                 className="text-[60pt] text-warning"
@@ -33,7 +34,7 @@ export default function TimeoutModal({
             </ModalBody>
             <ModalFooter>
               <Button variant="light" onPress={onClose}>
-                Close
+                {t("close")}
               </Button>
             </ModalFooter>
           </>

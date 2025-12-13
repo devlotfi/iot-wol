@@ -4,14 +4,19 @@ import { Button, Card, CardBody, Chip } from "@heroui/react";
 import LogoSVG from "../../assets/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faDownload,
   faPlug,
   faPlugCircleXmark,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { PWAContext } from "../../context/pwa-context";
 
 export default function ConnectionStatus() {
+  const { t } = useTranslation();
   const { connectionData, mqttDisconnect } = useContext(MqttContext);
+  const { beforeInstallPromptEvent } = useContext(PWAContext);
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
@@ -27,13 +32,6 @@ export default function ConnectionStatus() {
             <img src={LogoSVG} alt="logo" className="h-[2rem]" />
             {connectionData ? (
               <>
-                <Chip
-                  size="lg"
-                  variant="bordered"
-                  className="border border-divider"
-                >
-                  {connectionData.name}
-                </Chip>
                 {connectionData.isConnected ? (
                   <Chip
                     variant="bordered"
@@ -43,7 +41,7 @@ export default function ConnectionStatus() {
                       <FontAwesomeIcon icon={faPlug}></FontAwesomeIcon>
                     }
                   >
-                    Connected
+                    {t("connected")}
                   </Chip>
                 ) : (
                   <Chip
@@ -56,7 +54,7 @@ export default function ConnectionStatus() {
                       ></FontAwesomeIcon>
                     }
                   >
-                    Disconnected
+                    {t("disconnected")}
                   </Chip>
                 )}
                 <Button
@@ -77,9 +75,24 @@ export default function ConnectionStatus() {
                 size="lg"
                 className="border border-divider"
               >
-                No connection
+                {t("noConnection")}
               </Chip>
             )}
+
+            {beforeInstallPromptEvent ? (
+              <Button
+                size="sm"
+                radius="full"
+                color="primary"
+                startContent={
+                  <FontAwesomeIcon icon={faDownload}></FontAwesomeIcon>
+                }
+                onPress={() => beforeInstallPromptEvent.prompt()}
+                className="text-[11pt]"
+              >
+                {t("install")}
+              </Button>
+            ) : null}
           </CardBody>
         </Card>
       </div>
