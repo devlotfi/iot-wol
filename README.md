@@ -39,6 +39,7 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/react.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/fontawesome.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/formik.svg">
+  <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/i18n.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/tanstack-router.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/tanstack-query.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/rxdb.svg">
