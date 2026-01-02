@@ -69,7 +69,7 @@ export default function EditConnectionModal({
         .matches(
           /^(wss?|WSS?):\/\/([a-zA-Z0-9.-]+|\[[0-9a-fA-F:]+\])(:\d{1,5})?(\/[^\s]*)?$/,
           {
-            message: "Invalid mac adress",
+            message: "Invalid url",
           }
         )
         .required(),
