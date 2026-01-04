@@ -113,11 +113,11 @@ In this repo to bypass this limitations, we leveraged IOT technologies to help s
 
 ### MQTT Version
 
-Upload this script [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-mqtt) and configure it to match your needs
+Upload this [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-mqtt) and configure it to match your needs
 
 ### Arduino Cloud Version
 
-Upload this script [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-arduino-cloud) and configure it to match your needs
+Upload this [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-arduino-cloud) and configure it to match your needs
 
 ## Images
 
