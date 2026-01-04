@@ -5,47 +5,7 @@
 #include <pgmspace.h>
 #include <ArduinoJson.h>
 #include <ESP32Ping.h>
-
-// ----------------------
-// Wi-Fi credentials
-// ----------------------
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
-
-// ----------------------
-// MQTT credentials
-// ----------------------
-const char* mqtt_server   = "MQTT_SERVER";
-const int   mqtt_port     = 8883;
-const char* mqtt_user     = "USER";
-const char* mqtt_password = "PASSWORD";
-
-// ----------------------
-// MQTT Topics
-// ----------------------
-const char* mqtt_cmd_topic      = "iot-wol/topic";           // incoming commands
-const char* mqtt_response_topic = "iot-wol/response-topic";  // outgoing responses
-
-// ----------------------
-// UDP for WOL
-// ----------------------
-WiFiUDP udp;
-const int WOL_PORT = 9;
-
-// ----------------------
-// TLS Root Certificate
-// ----------------------
-const char rootCA[] PROGMEM = R"EOF(
------BEGIN CERTIFICATE-----
-Put your certificate here
------END CERTIFICATE-----
-)EOF";
-
-WiFiClientSecure espClient;
-PubSubClient client(espClient);
-
-unsigned long lastPublish = 0;
-const unsigned long publishInterval = 3600000;
+#include "properties.h"
 
 // ============================================================================
 // Send JSON response to response topic
