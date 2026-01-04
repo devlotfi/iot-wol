@@ -51,7 +51,11 @@ it works by using the capabilities of WOL (Wake-On-Lan) and extending it using I
 
 <p float="left">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/arduino.svg">
+  <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/arduino-cloud.svg">
+  <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/espressif.svg">
   <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/mqtt.svg">
+  <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/amazon-alexa.svg">
+  <img height="50px" src="https://devlotfi.github.io/stack-icons/icons/google-home.svg">
 </p>
 
 ## Diagrams
@@ -81,12 +85,22 @@ In this repo to bypass this limitations, we leveraged IOT technologies to help s
 
 # How does the system work ?
 
-- We have an intermidiary device connected to the LAN which is an arduino in our case that listens for an MQTT message on a cloud broker
+## MQTT Version
+
+- We have an intermidiary device connected to the LAN that listens for an MQTT message on a cloud broker
 - The client send the message to the broker from a client app
 - When the message is recieved and validated, we send a WOL Packet on the lan to the target MAC adress
 - We return an ACK message with a status to inform the user of the result of the operation
 
-<img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/working-diagram.png">
+<img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/working-diagram-mqtt.png">
+
+## Arduino Cloud Version
+
+- We have an intermidiary device connected to the LAN that listens for an trigger from Arduino Cloud
+- The user uses Google Home / Amazon Alexa / Arduino Cloud Dashboard to trigger the action for a specific device
+- When the message is recieved, we send a WOL Packet on the lan to the target device
+
+<img src="https://raw.githubusercontent.com/devlotfi/iot-wol/main/github-assets/working-diagram-arduino-cloud.png">
 
 # Building the WOL Controller
 
@@ -97,44 +111,13 @@ In this repo to bypass this limitations, we leveraged IOT technologies to help s
 
 ## Configuration
 
-Change this part of the arduino [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/arduino.ino) to match your needs
+### MQTT Version
 
-```ino
-// ----------------------
-// Wi-Fi credentials
-// ----------------------
-const char* ssid = "SSID";
-const char* password = "PASSWORD";
+Upload this script [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-mqtt) and configure it to match your needs
 
-// ----------------------
-// MQTT credentials
-// ----------------------
-const char* mqtt_server   = "MQTT_SERVER";
-const int   mqtt_port     = 8883;
-const char* mqtt_user     = "USER";
-const char* mqtt_password = "PASSWORD";
+### Arduino Cloud Version
 
-// ----------------------
-// MQTT Topics
-// ----------------------
-const char* mqtt_cmd_topic      = "iot-wol/topic";           // incoming commands
-const char* mqtt_response_topic = "iot-wol/response-topic";  // outgoing responses
-
-// ----------------------
-// UDP for WOL
-// ----------------------
-WiFiUDP udp;
-const int WOL_PORT = 9;
-
-// ----------------------
-// TLS Root Certificate
-// ----------------------
-const char rootCA[] PROGMEM = R"EOF(
------BEGIN CERTIFICATE-----
-Put your certificate here
------END CERTIFICATE-----
-)EOF";
-```
+Upload this script [script](https://github.com/devlotfi/iot-wol/blob/main/arduino/iot-wol-arduino-cloud) and configure it to match your needs
 
 ## Images
 
