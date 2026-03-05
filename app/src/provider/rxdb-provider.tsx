@@ -15,7 +15,7 @@ export default function RxDBProvider({ children }: PropsWithChildren) {
     queryKey: ["RXDB"],
     queryFn: async () => {
       const rxDb = await createRxDatabase<AppRxDatabase>({
-        name: "usthb-atlas",
+        name: "iot-wol",
         storage: wrappedValidateAjvStorage({
           storage: getRxStorageDexie(),
         }),
